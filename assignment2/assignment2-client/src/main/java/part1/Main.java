@@ -1,6 +1,5 @@
 package part1;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.concurrent.BlockingQueue;
@@ -13,14 +12,13 @@ public class Main {
   public static void main(String[] args) {
 
     //Variable Declaration
-    final Integer TOTAL_REQUEST = 200000;
     BlockingQueue<SkierData> buffer = new LinkedBlockingQueue<>();
     BlockingQueue<SkierClient> resultBuffer = new LinkedBlockingQueue<>();
     Integer successfulRequestCount = 0;
     Integer failedRequestCount = 0;
 
 
-    final Integer NUM_OF_REQUEST = 3200;
+    final Integer NUM_OF_REQUEST = 320;//3200;
     final Integer NUM_OF_THREADS = 1;
     //create Producer
     (new Thread(new SkierProducer(NUM_OF_REQUEST, NUM_OF_THREADS, buffer))).start();
@@ -31,7 +29,7 @@ public class Main {
     //---------------------------------------------------------------
 
     Integer phaseOneThread = 32;
-    Integer phaseOneRequestPerThread = 100;
+    Integer phaseOneRequestPerThread = 10;//100;
     //Add Status Code statistic (2xx, 4xx) to results
     System.out.println();
     System.out.println("### Start of Phase 1 ###");

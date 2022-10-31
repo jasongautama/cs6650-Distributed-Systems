@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.jasongautama</groupId>
-  <artifactId>assignment2-server</artifactId>
+  <artifactId>assignment2-rmq</artifactId>
   <version>1.0</version>
 
   <properties>
@@ -15,25 +15,17 @@
   </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version>
-      <scope>provided</scope>
+      <groupId>com.rabbitmq</groupId>
+      <artifactId>amqp-client</artifactId>
+      <version>5.16.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.9.1</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
-    <dependency>
-      <groupId>com.rabbitmq</groupId>
-      <artifactId>amqp-client</artifactId>
-      <version>5.16.0</version>
     </dependency>
 
     <dependency>
@@ -44,7 +36,5 @@
     </dependency>
 
   </dependencies>
-
-  <packaging>war</packaging>
 
 </project>

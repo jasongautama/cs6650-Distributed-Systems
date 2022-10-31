@@ -1,6 +1,5 @@
 package part1;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.concurrent.BlockingQueue;
@@ -39,7 +38,7 @@ public class SkierClient implements Runnable {
     this.buffer = buffer;
     this.numOfRequest = numOfRequest;
     this.latch = latch;
-    this.url = "http://localhost:8080/assignment2_server_war_exploded/skiers/";
+    this.url = "http://localhost:8080/assignment2_server_war_exploded";
 //    this.url = "http://ec2-34-222-0-117.us-west-2.compute.amazonaws.com:8080/"
 //        + "assignment1-1.0-SNAPSHOT/skiers/";
     this.recordLogs = recordLogs;
@@ -79,6 +78,7 @@ public class SkierClient implements Runnable {
     try {
       while (failedCounter < 5) {
         Timestamp start = Timestamp.from(Instant.now()); // Start the time
+        System.out.println("resortId:" + skier.getResortId());
         ApiResponse<Void> resp = apiSkier.writeNewLiftRideWithHttpInfo(skier.getLiftRide(),
             skier.getResortId(), skier.getSeasonId(), skier.getDayId(), skier.getSkierId());
         Timestamp end = Timestamp.from(Instant.now()); // Start the time
@@ -98,7 +98,7 @@ public class SkierClient implements Runnable {
       throw new ApiException("Network is currently down");
     } catch (ApiException e) {
       System.out.println("FailedRequest!");
-      //e.printStackTrace();
+      e.printStackTrace();
     }
 
     this.failedReq += 1;

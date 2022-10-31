@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="assignment2-rmq war">
+    <output-path>$PROJECT_DIR$/out/artifacts/assignment2_rmq_war</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.rabbitmq:amqp-client:5.16.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.36" />
+        </element>
+        <element id="directory" name="classes">
+          <element id="module-output" name="assignment2-rmq" />
+          <element id="module-output" name="assignment2-rmq-consumer" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

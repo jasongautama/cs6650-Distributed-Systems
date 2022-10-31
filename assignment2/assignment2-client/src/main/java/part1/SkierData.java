@@ -39,12 +39,16 @@ public class SkierData {
     int skierId = (int) (Math.random() * (max - min + 1) + min);
     max = 10;
     int resortId = (int) (Math.random() * (max - min + 1) + min);
+    int liftRideId = (int) (Math.random() * (max - min + 1) + min);
+    int randTime = (int) (Math.random() * (max - min + 1) + min);
 
     this.resortId = resortId;
     this.seasonId = SEASON_YEAR;
     this.dayId = DAY_ID;
     this.skierId = skierId;
     this.liftRide = new LiftRide();
+    this.liftRide.setLiftID(liftRideId);
+    this.liftRide.setTime(randTime);
 
   }
 

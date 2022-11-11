@@ -1,5 +1,5 @@
-package part1;
 import io.swagger.client.model.LiftRide;
+
 public class SkierData {
 
   private LiftRide liftRide;

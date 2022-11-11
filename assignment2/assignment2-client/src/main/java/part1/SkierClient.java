@@ -74,6 +74,8 @@ public class SkierClient implements Runnable {
     SkiersApi apiSkier = new SkiersApi();
     ApiClient apiClient = apiSkier.getApiClient();
     apiClient.setBasePath(url);
+    apiClient.setConnectTimeout(500000);
+    apiClient.setReadTimeout(500000);
     Integer failedCounter = 0;
     try {
       while (failedCounter < 5) {

@@ -5,25 +5,30 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 import io.swagger.client.model.LiftRide;
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class rmqConsumer {
   private final static String QUEUE_NAME = "skierQueue";
-  //private final static String RMQ_IP_ADDRESS = "localhost";
-  private final static String RMQ_IP_ADDRESS = "35.91.190.94";
-  private Map<String, String> map = new ConcurrentHashMap<>();
+  private final static String RMQ_IP_ADDRESS = "35.91.107.182"; //"localhost";
+  private final static String USERNAME = "jasonmax";
+  private final static Integer PORT = 5672;
+  private final static String PASSWORD = "r8cLhJUecQhV7DXdekKn";
   public static void main(String[] args) throws Exception {
     ConnectionFactory factory = new ConnectionFactory();
     factory.setHost(RMQ_IP_ADDRESS);
-    factory.setUsername("jasonmax");
-    factory.setPassword("r8cLhJUecQhV7DXdekKn");
-    factory.setPort(5672);
+    factory.setUsername(USERNAME);
+    factory.setPassword(PASSWORD);
+    factory.setPort(PORT);
     final Connection connection = factory.newConnection();
+    //Map<Integer, LiftRide> resultMap = new HashMap<>();
+    Map<Integer, LiftRide> resultMap = new ConcurrentHashMap<>();
 
+    final Integer NUM_THREADS = 10;
+    final CountDownLatch latch = new CountDownLatch(NUM_THREADS);
     Runnable runnable = new Runnable() {
       @Override
       public void run() {
@@ -39,41 +44,28 @@ public class rmqConsumer {
           DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             //get message body (which is liftRide)
             String message = new String(delivery.getBody(), "UTF-8");
-
-
-            //Map<String, LiftRide> resultMap = gson.fromJson(message, Map.class);
-            //LiftRide ride = gson.fromJson(message, LiftRide.class);
-//            for (String liftId: resultMap.keySet()) {
-//
-//            }
+            SkierData result = gson.fromJson(message, SkierData.class);
 
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             System.out.println( "Callback thread ID = " + Thread.currentThread().getId());
-            System.out.println(message);//ride.toString());
-            //System.out.println( "Callback thread ID = " + Thread.currentThread().getId()
-            //    + " Received '" + message + "'");
-
-            //
-
-
+            System.out.println(result.toString());
+            resultMap.put(result.getSkierId(), result.getLiftRide());
           };
           // process messages
           channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> { });
         } catch (IOException ex) {
           Logger.getLogger(rmqConsumer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //latch.countDown();
       }
     };
 
     // start threads and block to receive messages
-    final Integer THREAD_MAX = 10;
-    for (int i = 0; i < THREAD_MAX; i++) {
+    for (int i = 0; i < NUM_THREADS; i++) {
       Thread receive = new Thread(runnable);
       receive.start();
-
     }
-    //Thread recv2 = new Thread(runnable);
-    //recv2.start();
+    latch.await();
   }
 
 }

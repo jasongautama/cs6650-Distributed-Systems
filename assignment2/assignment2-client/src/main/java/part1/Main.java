@@ -18,7 +18,7 @@ public class Main {
     Integer failedRequestCount = 0;
 
 
-    final Integer NUM_OF_REQUEST = 320;//3200;
+    final Integer NUM_OF_REQUEST = 3200; //3200;
     final Integer NUM_OF_THREADS = 1;
     //create Producer
     (new Thread(new SkierProducer(NUM_OF_REQUEST, NUM_OF_THREADS, buffer))).start();
@@ -28,37 +28,13 @@ public class Main {
     // ######################### PHASE 1 #########################
     //---------------------------------------------------------------
 
-    Integer phaseOneThread = 32;
-    Integer phaseOneRequestPerThread = 10;//100;
+    Integer phaseOneThread = 32; //32;
+    Integer phaseOneRequestPerThread = 100;//100;
     //Add Status Code statistic (2xx, 4xx) to results
     System.out.println();
     System.out.println("### Start of Phase 1 ###");
     executePhase(phaseOneThread, phaseOneRequestPerThread, buffer, resultBuffer);
     System.out.println("### End of Phase 1 ###\n");
-    //---------------------------------------------------------------
-
-    // ######################### PHASE 2 #########################
-    //---------------------------------------------------------------
-//
-//    Integer phaseTwoThread = 100;
-//    Integer phaseTwoRequestPerThread = 840;
-//
-//    System.out.println("### Start of Phase 2 ###");
-//    executePhase(phaseTwoThread, phaseTwoRequestPerThread, buffer, resultBuffer);
-//    System.out.println("### End of Phase 2 ###");
-//    System.out.println();
-    //---------------------------------------------------------------
-
-    // ######################### PHASE 3 #########################
-    //---------------------------------------------------------------
-//    Integer phaseThreeThread = 100;
-//    Integer phaseThreeRequestPerThread = 840;
-//
-//    System.out.println("### Start of Phase 3 ###");
-//    executePhase(phaseThreeThread, phaseThreeRequestPerThread, buffer, resultBuffer);
-//    System.out.println("### End of Phase 3 ###");
-//    System.out.println();
-    //---------------------------------------------------------------
 
     Timestamp end = Timestamp.from(Instant.now());
 
@@ -69,7 +45,7 @@ public class Main {
         failedRequestCount += client.getFailedReq();
       }
     } catch (InterruptedException e) {
-      System.out.println("Error on part2.Main! " + e.getMessage());
+      System.out.println("Error on part1.Main! " + e.getMessage());
     }
 
     System.out.println("==== CLIENT PART 1 REPORT ====");

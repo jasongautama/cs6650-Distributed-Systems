@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class rmqConsumer {
   private final static String QUEUE_NAME = "skierQueue";
-  private final static String RMQ_IP_ADDRESS = "35.91.107.182"; //"localhost";
+  private final static String RMQ_IP_ADDRESS = "172.31.24.235"; //"52.37.80.29"; //private IP
   private final static String USERNAME = "jasonmax";
   private final static Integer PORT = 5672;
   private final static String PASSWORD = "r8cLhJUecQhV7DXdekKn";
@@ -24,10 +24,9 @@ public class rmqConsumer {
     factory.setPassword(PASSWORD);
     factory.setPort(PORT);
     final Connection connection = factory.newConnection();
-    //Map<Integer, LiftRide> resultMap = new HashMap<>();
     Map<Integer, LiftRide> resultMap = new ConcurrentHashMap<>();
 
-    final Integer NUM_THREADS = 10;
+    final Integer NUM_THREADS = 100;
     final CountDownLatch latch = new CountDownLatch(NUM_THREADS);
     Runnable runnable = new Runnable() {
       @Override

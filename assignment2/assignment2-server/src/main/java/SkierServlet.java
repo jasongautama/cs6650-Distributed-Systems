@@ -4,7 +4,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import io.swagger.client.model.LiftRide;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
@@ -15,7 +14,7 @@ public class SkierServlet extends HttpServlet {
 
   private final static Integer INVALID_NUM = -1;
   private final static String QUEUE_NAME = "skierQueue";
-  private final static String RMQ_IP_ADDRESS = "35.91.107.182"; //"localhost";
+  private final static String RMQ_IP_ADDRESS = "172.31.24.235"; //"localhost";
   private final static String USERNAME = "jasonmax";
   private final static Integer PORT = 5672;
   private final static String PASSWORD = "r8cLhJUecQhV7DXdekKn";
@@ -91,8 +90,6 @@ public class SkierServlet extends HttpServlet {
 
     //construct data to SkierData class
     SkierData skier = new SkierData(ride, resortId, seasonId, dayId, skierId);
-    //SkierData skier = gson.fromJson(sb.toString(), SkierData.class);
-
     Status status = new Status();
 
     if (validateJson(skier)) {
@@ -110,15 +107,12 @@ public class SkierServlet extends HttpServlet {
       status.setDescription("Invalid POST request!");
     }
 
-    //TODO: may need to be replaced by LiftRide
     String strResp = gson.toJson(status);
     response.getOutputStream().print(strResp);
     response.getOutputStream().flush();
     try {
       //send data to RMQ
       if (status.isSuccess()) {
-        //create channel and queue
-        //Channel channel = connection.createChannel();
 
         //take Channel from BlockingQueue Channel pool
         Channel channel = this.channelPool.borrowObject();
@@ -126,17 +120,13 @@ public class SkierServlet extends HttpServlet {
         //article: https://www.codetd.com/en/article/7884630
         //queue, durable, exclusive, autoDelete, arguments
         channel.queueDeclare(QUEUE_NAME, true, false, false, null);
-        //byte[] data = ride.getBytes();
-        //add it to be send to RMQ
 
         //send to RMQ
-        //String liftRideBody = sb.toString(); //only the json body ~ need more than this
         String skierDataJson = gson.toJson(skier);
         channel.basicPublish("", QUEUE_NAME, null,
             skierDataJson.getBytes(StandardCharsets.UTF_8));
-        System.out.println(skierDataJson);
+        //System.out.println(skierDataJson);
 
-        //channel.close();
         this.channelPool.returnObject(channel);
       }
     } catch (Exception ex) {

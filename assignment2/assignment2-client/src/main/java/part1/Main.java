@@ -69,7 +69,6 @@ public class Main {
           " & requestPerThread = " + requestPerThread);
 
       for (int i = 0; i < numOfThreads; i++) {
-        //System.out.println("inside Loop.. tid:" + i);
         SkierClient client = new SkierClient(buffer, requestPerThread, latch_phase);
         pool.execute(client);
         resultBuffer.add(client);

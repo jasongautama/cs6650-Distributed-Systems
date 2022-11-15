@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import io.swagger.client.model.LiftRide;
 
 public class SkierData {

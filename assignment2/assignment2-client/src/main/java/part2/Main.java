@@ -46,16 +46,16 @@ public class Main {
 
     // ######################### PHASE 2 #########################
     //---------------------------------------------------------------
-
-    Integer phaseTwoThread = 100;
-    Integer phaseTwoRequestPerThread = 840;
+    //84000
+    Integer phaseTwoThread = 100; //100;
+    Integer phaseTwoRequestPerThread = 840; //840;
 
     System.out.println("### Start of Phase 2 ###");
     executePhase(phaseTwoThread, phaseTwoRequestPerThread, buffer, resultBuffer, recordLogs);
     System.out.println("### End of Phase 2 ###");
     System.out.println();
     //---------------------------------------------------------------
-
+    //84000
     // ######################### PHASE 3 #########################
     //---------------------------------------------------------------
     Integer phaseThreeThread = 100;
@@ -105,7 +105,6 @@ public class Main {
           " & requestPerThread = " + requestPerThread);
 
       for (int i = 0; i < numOfThreads; i++) {
-        //System.out.println("inside Loop.. tid:" + i);
         SkierClient client = new SkierClient(buffer, requestPerThread, latch_phase, recordLogs);
         pool.execute(client);
         resultBuffer.add(client);

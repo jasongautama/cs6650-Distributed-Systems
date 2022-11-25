@@ -26,11 +26,9 @@ public class SkierRedis {
   public boolean writeToRedis(SkierData skier) {
     this.skier = skier;
     System.out.println(this.skier);
-    try (Jedis jedis = this.client.getResource()) {
-      return writeNumDaysASkierSkied() &&
-          writeUniqueSkiersVisitedResortOnCertainDay() &&
-          writeVerticalTotalsForEachSkiDays();
-    }
+    return writeNumDaysASkierSkied() &&
+        writeUniqueSkiersVisitedResortOnCertainDay() &&
+        writeVerticalTotalsForEachSkiDays();
   }
 
 
@@ -68,7 +66,6 @@ public class SkierRedis {
   //"For skier N, show me the lifts they rode on each ski day"
   private Boolean writeVerticalTotalsForEachSkiDays() {
     String strSkierId = "day_id#vertical:" + this.skier.getSkierId();
-    String dayId = this.skier.getDayId();
     final long SUCCESSFUL = 1;
     try (Jedis jedis = this.client.getResource()) {
       //add vertical height for skiers
@@ -76,17 +73,6 @@ public class SkierRedis {
       long status = jedis.sadd(strSkierId, dayAndLiftId);
       return status == SUCCESSFUL;
     }
-  }
-
-  //"For skier N, what are the vertical totals for each ski day?"
-  private Boolean getVerticalTotalForEachSkiDay() {
-
-    return true;
-  }
-
-  private Boolean getLiftIdForEachSkiDay() {
-
-    return true;
   }
 
 

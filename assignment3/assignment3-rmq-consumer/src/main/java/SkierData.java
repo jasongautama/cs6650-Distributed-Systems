@@ -92,19 +92,4 @@ public class SkierData {
   private String formatKey(String word) {
     return '"' + word + '"' + ':';
   }
-  /*
-    @Override
-  public String toString() {
-    return "{" +
-        '"' + "resortId" + '"' + ":" + resortId +
-        ", \"seasonId\":\"" + seasonId + '\"' +
-        ", \"dayId\":" + dayId +
-        ", \"skierId\":" + skierId +
-        ", \"LiftRide\":{" +
-          " \"time\":" + liftRide.getTime() +
-          ", \"liftID\"" + liftRide.getLiftID() +
-        "}" +
-    "}";
-  }
-   */
 }

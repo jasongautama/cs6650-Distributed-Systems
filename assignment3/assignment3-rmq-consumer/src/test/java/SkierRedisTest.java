@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 class SkierRedisTest {
 
-  //SkierRedis testRedis;
   @BeforeEach
   void setUp() {
 

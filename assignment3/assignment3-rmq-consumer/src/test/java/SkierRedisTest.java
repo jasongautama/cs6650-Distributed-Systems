@@ -40,12 +40,12 @@ class SkierRedisTest {
 
   @Test
   void writeUniqueSkiersVisitedResortOnCertainDay() {
-//    SkierData skier = new SkierData();
-//    //resort_id:8#day_id:69
-//    skier.setResortId(8);
-//    skier.setDayId("69");
-//    SkierRedis testRedis = new SkierRedis(skier);
-//    testRedis.writeUniqueSkiersVisitedResortOnCertainDay();
+    SkierData skier = new SkierData();
+    //resort_id:8#day_id:68
+    skier.setResortId(8);
+    skier.setDayId("68");
+    SkierRedis testRedis = new SkierRedis(skier);
+    testRedis.writeUniqueSkiersVisitedResortOnCertainDay();
   }
 
   @Test

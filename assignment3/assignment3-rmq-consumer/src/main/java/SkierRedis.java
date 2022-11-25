@@ -27,55 +27,31 @@ public class SkierRedis {
     this.skier = skier;
     System.out.println(this.skier);
     try (Jedis jedis = this.client.getResource()) {
-      return writeNumDaysASkierSkied(jedis) &&
-          writeUniqueSkiersVisitedResortOnCertainDay(jedis);
+      return writeNumDaysASkierSkied() &&
+          writeUniqueSkiersVisitedResortOnCertainDay() &&
+          writeVerticalTotalsForEachSkiDays();
     }
   }
 
 
   /**
-   * Q1. "For skier N, how many days have they skied this season?"
-   * A. key: "skier_id#days:'skierID'", value: dayId
+   * "For skier N, how many days have they skied this season?"
+   *    key: "skier_id#days:'skierID'", value: dayId
    * @return: true if value added to list successfully; false if already exist
    */
-  private Boolean writeNumDaysASkierSkied(Jedis jedis) {
+  private Boolean writeNumDaysASkierSkied() {
 
     String strSkierId = "skier_id#days:" + this.skier.getSkierId();
     String dayId = this.skier.getDayId();
     final long SUCCESSFUL = 1;
-//    try (Jedis jedis = this.client.getResource()) {
-      //add skier_id#days to a list for each skier
+    try (Jedis jedis = this.client.getResource()) {
+      //add skier_id#days to a list of dayId for each skier
       long status = jedis.sadd(strSkierId, dayId);
       return status == SUCCESSFUL;
-//    }
+    }
   }
 
-  //Q2. For skier 49076, what are the vertical totals for each ski day?
-
-  //Q4. "How many unique skiers visited resort 6 on day 2?"
-  //key: "resort_id:6#days:2", value: [set of skierId] -> return len()
-  //"resort_id:1#day_id:1" [123,234,456,321]
-  //resort_id:1#day_id:2 [456,321,139]
-  //resort_id:2#day_id:2 [123]
-  //resort_id:2#day_id:3 [123,234]
-  /**
-   *
-   * @return true if successfully written to DB; false otherwise
-   */
-  public Boolean writeUniqueSkiersVisitedResortOnCertainDay(Jedis jedis) {
-    //String strSkierId = "skier_id#days:" + this.skier.getSkierId();
-    //String dayId = this.skier.getDayId();
-    String resortId = String.valueOf(this.skier.getResortId());
-    String key = "resort_id:" + resortId + "#day_id:" + this.skier.getDayId();
-    final int SUCCESSFUL = 1;
-
-    //try (Jedis jedis = this.client.getResource()) {
-      String skierId = String.valueOf(this.skier.getSkierId());
-      long status = jedis.sadd(key, skierId);
-      return status == SUCCESSFUL;
-    //}
-  }
-
+  //key: "skier_id#days:'skierID'", value: dayId
   public Integer getCountNumDaysASkierSkied(Integer skierId) {
     String strSkierId = "skier_id#days:" + skierId;
     try (Jedis jedis = this.client.getResource()) {
@@ -84,6 +60,53 @@ public class SkierRedis {
         System.out.print(day + ",");
       }
       return days.size();
+    }
+  }
+
+  //"For skier N, what are the vertical totals for each ski day?"
+  //  key: "day_id#vertical:'skierID'", value: liftId * 10
+  //"For skier N, show me the lifts they rode on each ski day"
+  private Boolean writeVerticalTotalsForEachSkiDays() {
+    String strSkierId = "day_id#vertical:" + this.skier.getSkierId();
+    String dayId = this.skier.getDayId();
+    final long SUCCESSFUL = 1;
+    try (Jedis jedis = this.client.getResource()) {
+      //add vertical height for skiers
+      String dayAndLiftId = this.skier.getDayId() + "#" + this.skier.getLiftRide().getLiftID();
+      long status = jedis.sadd(strSkierId, dayAndLiftId);
+      return status == SUCCESSFUL;
+    }
+  }
+
+  //"For skier N, what are the vertical totals for each ski day?"
+  private Boolean getVerticalTotalForEachSkiDay() {
+
+    return true;
+  }
+
+  private Boolean getLiftIdForEachSkiDay() {
+
+    return true;
+  }
+
+
+  //"How many unique skiers visited resort 6 on day 2?"
+  //  key: "resort_id:'resortId'#days:'dayId", value: [set of skierId] -> return len()
+  //"resort_id:1#day_id:1" [123,234,456,321] -> 4
+  //resort_id:1#day_id:2 [456,321,139] -> 3
+  /**
+   * Q4. "How many unique skiers visited resort 6 on day 2?"
+   * @return true if successfully written to DB; false otherwise
+   */
+  public Boolean writeUniqueSkiersVisitedResortOnCertainDay() {
+    String resortId = String.valueOf(this.skier.getResortId());
+    String key = "resort_id:" + resortId + "#day_id:" + this.skier.getDayId();
+    final int SUCCESSFUL = 1;
+
+    try (Jedis jedis = this.client.getResource()) {
+      String skierId = String.valueOf(this.skier.getSkierId());
+      long status = jedis.sadd(key, skierId);
+      return status == SUCCESSFUL;
     }
   }
 

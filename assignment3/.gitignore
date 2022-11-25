@@ -1,3 +1,3 @@
-*.xml
-*.class
-*.jar
+**/.xml
+**/.class
+**/.jar

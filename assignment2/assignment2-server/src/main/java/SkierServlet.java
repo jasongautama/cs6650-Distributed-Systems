@@ -14,7 +14,8 @@ public class SkierServlet extends HttpServlet {
 
   private final static Integer INVALID_NUM = -1;
   private final static String QUEUE_NAME = "skierQueue";
-  private final static String RMQ_IP_ADDRESS = "172.31.24.235"; //"localhost";
+  //private final static String RMQ_IP_ADDRESS = "172.31.24.235";
+  private final static String RMQ_IP_ADDRESS = "localhost";
   private final static String USERNAME = "jasonmax";
   private final static Integer PORT = 5672;
   private final static String PASSWORD = "r8cLhJUecQhV7DXdekKn";
